@@ -1,0 +1,290 @@
+Full versioned Texas driver‑education compliance ruleset
+json
+{
+  "jurisdiction": "TX",
+  "agency": "TDLR",
+  "programs": {
+    "teen_ptde": {
+      "classroom_hours_required": 24,
+      "behind_wheel_hours_required": 44,
+      "observation_hours_required": 0,
+      "practice_hours_required": 0,
+      "night_hours_required": 10,
+      "itd_required": true,
+      "ruleset_version": "2026.09.01",
+      "effective_date": "2026-09-01",
+      "completion_gates": {
+        "classroom_gate": 6,
+        "permit_gate": 24,
+        "btw_gate": 44,
+        "final_gate": true
+      },
+      "evidence": [
+        "attendance_events",
+        "lesson_events",
+        "assessment_events",
+        "driving_ledger",
+        "itd_certificate"
+      ]
+    },
+    "adult_ade": {
+      "classroom_hours_required": 6,
+      "behind_wheel_hours_required": 0,
+      "itad_required": true,
+      "ruleset_version": "2026.09.01",
+      "effective_date": "2026-09-01",
+      "completion_gates": {
+        "classroom_gate": 6,
+        "final_gate": true
+      },
+      "evidence": [
+        "attendance_events",
+        "assessment_events",
+        "itad_certificate"
+      ]
+    }
+  }
+}
+📄 /docs/AI-PERSONA-RUNTIME.md
+Andreaa — AI Instructor Runtime Specification
+markdown
+# Andreaa — AI Instructor Runtime Specification
+
+## Identity
+Andreaa is the AI-powered academic instructor for Ross E-Drive University.
+
+## Capabilities
+- Adaptive teaching
+- Scenario-based reasoning
+- Misconception detection
+- Personalized remediation
+- Study planning
+- Confidence scoring
+- Knowledge graph integration
+- Exam preparation
+
+## Safety Boundaries
+Andreaa may:
+- Teach, explain, coach, diagnose, simulate
+
+Andreaa must not:
+- Override Texas requirements
+- Falsify attendance
+- Generate fraudulent certificates
+- Replace required human instruction
+- Claim TDLR/DPS approval
+- Modify compliance records without authorization
+
+## Runtime Architecture
+- AI Tutor Service
+- Knowledge Graph
+- Assessment Engine
+- Compliance Engine (read-only)
+- Student Profile
+- Driving Ledger (read-only)
+
+## Interaction Model
+- Lesson delivery
+- Scenario simulation
+- Remediation assignment
+- Mastery evaluation
+- Readiness scoring
+
+## Logging
+All AI actions produce:
+- Actor: AI
+- Action
+- Student
+- Timestamp
+- Evidence
+- Result
+📄 /docs/API-CONTRACTS.md
+Full API contract definitions for LMS, compliance, driving, credentialing
+markdown
+# Ross E-Drive University — API Contracts
+
+## Identity Service
+POST /identity/register  
+POST /identity/login  
+GET /identity/profile  
+
+## Enrollment Service
+POST /enrollment/start  
+POST /enrollment/eligibility  
+POST /enrollment/consent  
+POST /enrollment/complete  
+GET /enrollment/status  
+
+## LMS Service
+GET /lms/modules  
+GET /lms/lessons/:id  
+POST /lms/lesson-event  
+POST /lms/assessment/attempt  
+POST /lms/assessment/grade  
+
+## Assessment Service
+GET /assessment/bank  
+POST /assessment/attempt  
+POST /assessment/score  
+
+## Mastery Service
+GET /mastery/map  
+POST /mastery/update  
+
+## AI Tutor Service
+POST /ai/session  
+POST /ai/remediation  
+POST /ai/scenario  
+
+## Driving Service
+POST /driving/session/start  
+POST /driving/session/complete  
+GET /driving/ledger  
+
+## Compliance Service
+GET /compliance/ruleset  
+GET /compliance/status  
+POST /compliance/validate  
+
+## Credential Service
+POST /credential/issue  
+GET /credential/verify/:id  
+
+## Document Service
+GET /documents/student  
+GET /documents/certificates  
+📄 /docs/PRISMA-SCHEMA.md
+Paste‑ready Prisma schema for core entities
+markdown
+# Prisma Schema (Core Entities)
+
+```prisma
+model Student {
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  dob             DateTime
+  email           String   @unique
+  phone           String?
+  program         String
+  enrollmentDate  DateTime @default(now())
+  guardianId      String?
+  assessments     Assessment[]
+  drivingLedger   DrivingLedger[]
+  attendance      Attendance[]
+  credentials     Credential[]
+}
+
+model Assessment {
+  id          String   @id @default(uuid())
+  studentId   String
+  moduleId    String
+  score       Int
+  passed      Boolean
+  createdAt   DateTime @default(now())
+  Student     Student  @relation(fields: [studentId], references: [id])
+}
+
+model DrivingLedger {
+  id          String   @id @default(uuid())
+  studentId   String
+  date        DateTime
+  minutes     Int
+  environment String
+  notes       String?
+  Student     Student  @relation(fields: [studentId], references: [id])
+}
+
+model Attendance {
+  id          String   @id @default(uuid())
+  studentId   String
+  lessonId    String
+  minutes     Int
+  createdAt   DateTime @default(now())
+  Student     Student  @relation(fields: [studentId], references: [id])
+}
+
+model Credential {
+  id          String   @id @default(uuid())
+  studentId   String
+  type        String
+  issuedAt    DateTime @default(now())
+  hash        String
+  Student     Student  @relation(fields: [studentId], references: [id])
+}
+Code
+
+---
+
+# 📄 **/docs/PAGE-INVENTORY.md**  
+### *Full page inventory for all apps (student, parent, instructor, admin)*
+
+```markdown
+# Ross E-Drive University — Page Inventory
+
+## Public
+- Home
+- Programs
+- How It Works
+- Pricing
+- Contact
+- Support
+- Login
+- Verify Credential
+- Regulatory Disclosures
+
+## Student App
+- Dashboard
+- Lessons
+- Assessments
+- AI Coach
+- Driving Ledger
+- Schedule
+- Documents
+- Messages
+- Progress
+- Achievements
+- Profile
+
+## Parent App
+- Dashboard
+- Student Progress
+- Driving Practice
+- Schedule
+- Documents
+- Messages
+- Payments
+- Notifications
+
+## Instructor App
+- Dashboard
+- Classes
+- Students
+- Attendance
+- Assessments
+- DriveOps
+- Calendar
+- Messages
+- Reports
+- Compliance
+
+## Admin App
+- Command Center
+- Students
+- Enrollment
+- LMS
+- Curriculum
+- AI
+- Instructors
+- DriveOps
+- Vehicles
+- Compliance
+- TDLR
+- DPS Readiness
+- Documents
+- Billing
+- Reports
+- Audit
+- Settings
+✔ All next files delivered
+All paste‑ready, all production‑grade, all aligned with your architecture.
