@@ -1,0 +1,418 @@
+DRIVING SESSION FLOW
+Purpose
+Defines the complete lifecycle of supervised driving sessions.
+
+Session Types
+Observation
+
+Behind‑the‑Wheel (BTW)
+
+Practice
+
+Night
+
+Evaluation
+
+Lifecycle
+Session Created
+
+Session Scheduled
+
+Session Started
+
+Session Paused
+
+Session Completed
+
+Instructor Signed
+
+Student Acknowledged
+
+Ledger Updated
+
+Compliance Validated
+
+Required Fields
+studentId
+
+instructorId
+
+vehicleId
+
+date
+
+startTime
+
+endTime
+
+environment
+
+skillsPracticed
+
+notes
+
+Compliance Integration
+Driving sessions feed evidence into BTW, night driving, ITTD readiness, and final eligibility.
+
+COMPLIANCE EVIDENCE MATRIX
+Purpose
+Defines all evidence required to validate Texas driver‑education completion.
+
+Evidence Categories
+Attendance
+
+Lessons
+
+Assessments
+
+Driving
+
+ITTD/ITAD
+
+Credentials
+
+Matrix
+Requirement	Evidence	Source	Status
+Classroom Hours	Attendance events	LMS	Required
+Permit Gate (6h)	Attendance + lessons	LMS	Required
+24‑Hour Gate	Attendance + assessments	LMS	Required
+BTW Hours	Driving ledger	DriveOps	Required
+Night Hours	Driving ledger	DriveOps	Required
+ITTD	Certificate	DPS	Required
+ITAD	Certificate	DPS	Required
+Final Completion	All evidence validated	Compliance Engine	Required
+
+
+Validation Flow
+Evidence → Ruleset → Validation → Status → Eligible for Completion = TRUE
+
+CREDENTIAL SPECIFICATION
+Credential Types
+Permit Certificate
+
+License Certificate
+
+Driving Completion Certificate
+
+Academic Completion Certificate
+
+Fields
+studentName
+
+studentId
+
+courseType
+
+programVersion
+
+completionDate
+
+credentialId
+
+verificationUrl
+
+documentHash
+
+authorizedSignature
+
+auditMetadata
+
+Credential Flow
+Student Record → Compliance Engine → Eligibility Check → Credential Generator → PDF → Verification QR → Audit Record
+
+Security
+Document hashing
+
+Immutable audit logs
+
+Verification endpoint
+
+Signature validation
+
+REGULATORY DISCLOSURES
+Disclosure Statement
+Ross E‑Drive University is designed to operate in accordance with applicable Texas driver‑education requirements.
+Regulatory requirements may change.
+Program requirements displayed during enrollment are based on current regulatory information maintained by Ross E‑Drive University.
+No governmental endorsement or approval is implied unless explicitly granted.
+
+TDLR Notice
+References to TDLR requirements describe regulatory obligations and do not imply approval unless explicitly stated.
+
+DPS Notice
+ITTD/ITAD must be completed before the DPS skills examination.
+Certificates are valid for 90 days.
+
+Compliance Notice
+Completion is determined by verified evidence, not by lesson clicks.
+
+Identity & Consent
+Minors require parent/guardian consent and identity verification.
+
+STUDENT DASHBOARD SPECIFICATION
+Sections
+Progress Overview
+
+Course progress
+
+Classroom hours
+
+Driving hours
+
+Readiness score
+
+Next Lesson
+
+Title
+
+Estimated time
+
+Start button
+
+AI Coach (Andreaa)
+
+Recommendations
+
+Remediation
+
+Scenarios
+
+Driving Practice
+
+Completed hours
+
+Remaining hours
+
+Next session
+
+Documents
+
+Certificates
+
+Logs
+
+Enrollment docs
+
+Messages
+
+Instructor
+
+Parent
+
+System
+
+Achievements
+
+Milestones
+
+Badges
+
+Profile
+
+Student info
+
+Program info
+
+Enrollment status
+
+INSTRUCTOR DASHBOARD SPECIFICATION
+Sections
+Classes
+
+Active
+
+Upcoming
+
+Attendance
+
+Students
+
+Progress
+
+Driving
+
+Compliance
+
+Attendance
+
+Lesson attendance
+
+Assessment attendance
+
+Audit events
+
+Assessments
+
+Grade
+
+Review
+
+Remediation
+
+DriveOps
+
+Schedule sessions
+
+Assign vehicles
+
+Complete sessions
+
+Update ledger
+
+Calendar
+
+Teaching
+
+Driving
+
+Availability
+
+Messages
+
+Students
+
+Parents
+
+Admin
+
+Reports
+
+Academic
+
+Driving
+
+Compliance
+
+Compliance
+
+Evidence review
+
+Exceptions
+
+Required actions
+
+ADMIN COMMAND CENTER
+Sections
+Students
+
+Enrollment
+
+Progress
+
+Compliance
+
+Documents
+
+Audit history
+
+Enrollment
+
+Applications
+
+Eligibility
+
+Identity verification
+
+Guardian consent
+
+Payment status
+
+LMS
+
+Curriculum
+
+Modules
+
+Lessons
+
+Assessments
+
+Textbook
+
+AI
+
+Tutor configuration
+
+Knowledge graph
+
+Scenario library
+
+Remediation rules
+
+Instructors
+
+Profiles
+
+Credentials
+
+Schedules
+
+Compliance
+
+DriveOps
+
+Vehicles
+
+Sessions
+
+Assignments
+
+Ledger integrity
+
+Compliance
+
+TDLR rulesets
+
+DPS readiness
+
+Evidence validation
+
+Exceptions
+
+Versioning
+
+Documents
+
+Certificates
+
+Logs
+
+Enrollment docs
+
+Verification endpoints
+
+Billing
+
+Payments
+
+Refunds
+
+Invoices
+
+Reports
+
+Academic
+
+Operational
+
+Compliance
+
+AI analytics
+
+Audit
+
+Immutable logs
+
+Event viewer
+
+Credential verification logs
+
+Settings
+
+System configuration
+
+Program versions
+
+Regulatory updates
+
+Security
