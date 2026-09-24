@@ -1,0 +1,41 @@
+{
+  "release":"2026-09-24.brand.2",
+  "appId":"ross-e-drive-rphmnw",
+  "baseSnapshot":"1790288961216",
+  "deployedSnapshot":"1790291712340",
+  "observedDeploymentState":"ready",
+  "archiveScope":"Brand code patch, theme and provenance; not a full application-source export or native repository build binding.",
+  "resourceRequirement":{"name":"Ross E-Drive University logo","target_path":"public/resources/ross-e-drive-logo.png","accept":"image/png","required":false},
+  "artworkUploadPerformed":false,
+  "generationId":"2c7e56fd-8777-41b6-a191-5f3de9307140",
+  "cropPixels":[852,365,987,500],
+  "sourceDimensions":[1055,1491],
+  "rights":{"controllerLabel":"Ross E-Drive University","legalAssignmentVerified":false,"copyrightRegistrationFiled":false,"trademarkRegistrationFiled":false,"humanAuthorshipVerified":false,"trademarkClearancePerformed":false,"fontBinariesIncluded":false,"existingLicensesPreserved":true},
+  "files":[
+    {"filename":"shared/brand-release.ts","diffs":[
+      {"from":"revision: '2026-09-24.1',","to":"revision: '2026-09-24.brand.2',\n  assetSha256: '06dcfdff908059dcaa67d845ec247e6ae93381e924907047a5fcc3ddddd42483',\n  ip: { controller: 'Ross E-Drive University', notice: 'Brand integration © 2026 Ross Tax Pro Software Co. Applicable rights reserved. Existing brand and third-party notices remain unchanged.', registrationFiled: false, registeredSymbolEnabled: false },"},
+      {"from":"assetPath: 'public/resources/ross-e-drive-brand-board.png', assetUrl: '/resources/ross-e-drive-brand-board.png',","to":"assetPath: 'public/resources/ross-e-drive-logo.png', assetUrl: '/resources/ross-e-drive-logo.png',"},
+      {"from":"crop: { x: 0.811, y: 0.247, width: 0.132, height: 0.094 },","to":"crop: { x: 0, y: 0, width: 1, height: 1 },"}
+    ]},
+    {"filename":"backend/brand-release.ts","content":"import { createHash } from 'node:crypto';\nimport { json } from '@appdeploy/sdk';\nimport { BRAND } from '../shared/brand-release';\n\nlet checkedAt = 0;\nlet assetAvailable = false;\nlet assetStatus = 'AWAITING_RESOURCES_UPLOAD';\nexport const brandReleaseRoutes = {\n  'GET /api/brand-release': [async () => {\n    if (Date.now() - checkedAt > 15000) {\n      assetAvailable = false; assetStatus = 'AWAITING_RESOURCES_UPLOAD';\n      try {\n        const response = await fetch(BRAND.origin + BRAND.assetUrl, { redirect: 'error', signal: AbortSignal.timeout(3500) });\n        if (response.ok && (response.headers.get('content-type') || '').startsWith('image/')) {\n          const bytes = new Uint8Array(await response.arrayBuffer());\n          if (bytes.byteLength <= 2_000_000) {\n            assetAvailable = createHash('sha256').update(bytes).digest('hex') === BRAND.assetSha256;\n            assetStatus = assetAvailable ? 'VERIFIED' : 'HASH_MISMATCH';\n          } else assetStatus = 'RESOURCE_TOO_LARGE';\n        }\n      } catch { assetAvailable = false; assetStatus = 'RESOURCE_NOT_VERIFIED'; }\n      checkedAt = Date.now();\n    }\n    return json({ brand: BRAND, assetAvailable, assetStatus, actionsExecuteTransactions: false });\n  }],\n};\n"},
+    {"filename":"src/BrandShell.tsx","diffs":[
+      {"from":"      setMessage('Brand service connected.');","to":"      setMessage('Brand service connected. Artwork: ' + String(result.data.assetStatus || 'NOT_VERIFIED'));"},
+      {"from":"{open ? <main style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 20px', background: '#F8F4E9', color: '#0B2D5B' }}>","to":"<div className='ross-release-native' hidden={open}>{children}</div>\n    {open && <main className='ross-release-page' style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 20px', background: '#F8F4E9', color: '#0B2D5B' }}>"},
+      {"from":"alt={BRAND.name + ' approved brand identity board'} onError={() => setAvailable(false)} style={{ width: '100%', height: 'auto' }}","to":"alt={BRAND.name + ' approved raster logo'} onError={() => setAvailable(false)} style={{ width: 160, maxWidth: '100%', height: 'auto', borderRadius: 12 }}"},
+      {"from":"      <p>Navy #0B2D5B · Gold #D4AF37 · Silver #C0C0C0 · Cream #F8F4E9 · Black #0A0A0A</p>","to":"      <h2>Rights & provenance</h2>\n      <p>{BRAND.ip.notice}</p>\n      <p>AI-generated concept approved in this conversation; documented raster crop, not a vector master. Human-authorship evidence and trademark clearance have not been verified. No copyright or trademark registration was filed. No registered-trademark symbol is added.</p>\n      <p>This user-directed brand mapping is not a legal assignment or native GitHub-to-AppDeploy source binding. Existing source, font and third-party licenses remain unchanged. Artwork does not establish accreditation or regulatory approval.</p>\n      <p>Expected logo SHA-256: <code>{BRAND.assetSha256}</code></p>\n      <p>Navy #0B2D5B · Gold #D4AF37 · Silver #C0C0C0 · Cream #F8F4E9 · Black #0A0A0A</p>"},
+      {"from":"    </main> : children}","to":"    </main>}"}
+    ]},
+    {"filename":"src/brand-theme.css","content":"/* Ross E-Drive brand integration; regulatory controls are unchanged. */\n:root { --ross-brand-navy: #0B2D5B; --ross-brand-gold: #D4AF37; --ross-brand-silver: #C0C0C0; --ross-brand-cream: #F8F4E9; --ross-brand-black: #0A0A0A; }\n.ross-release-native { display: contents; }\n.ross-release-native[hidden] { display: none !important; }\n.ross-release-page { box-sizing: border-box; width: auto; min-height: 65vh; font: 16px/1.6 'Montserrat', system-ui, sans-serif; }\n.ross-release-page h1, .ross-release-page h2 { font-family: 'Playfair Display', Georgia, serif; color: var(--ross-brand-navy); }\n.ross-release-page code { overflow-wrap: anywhere; white-space: normal; }\n.ross-release-page button { padding: 10px 16px; border: 1px solid var(--ross-brand-gold); border-radius: 7px; background: var(--ross-brand-navy); color: var(--ross-brand-cream); cursor: pointer; }\n.ross-release-page button:disabled { opacity: .6; cursor: not-allowed; }\n.ross-release-page :focus-visible { outline: 3px solid var(--ross-brand-gold); outline-offset: 3px; }\n@media (max-width: 560px) { .ross-release-page { padding: 20px 14px !important; } }\n"},
+    {"filename":"src/main.tsx","diffs":[{"from":"import './index.css';","to":"import './index.css';\nimport './brand-theme.css';"}]},
+    {"filename":"tests/tests.txt","diffs":[
+      {"from":"Covers: approved icon/avatar/favicon integration, header identity, AI-faculty identity, footer identity, GET /api/brand-release, brand resource availability, brand CTA mapping, persistent QA page routes","to":"Covers: approved icon/avatar/favicon integration, header identity, AI-faculty identity, footer identity, GET /api/brand-release, hash-verified logo availability, provenance disclosure, brand CTA mapping, persistent QA page routes"},
+      {"from":"4. Choose Brand identity, refresh and verify that the brand view persists with connected service status and honest artwork availability.","to":"4. Choose Brand identity, refresh and verify persistent service status with a hash-verified raster logo or explicit pending-upload notice. Review Rights & provenance and verify no registration, accreditation or regulatory approval is claimed."}
+    ]}
+  ],
+  "supplementalAppDeployDocument":"docs/BRAND_IP_NOTICE.md",
+  "operationalBoundary":"The application remains a preapproval review environment. Enrollment, payment, regulated instruction and certificates remain disabled.",
+  "otherRegisteredApplication":"ross-e-drive-k8k8mw",
+  "otherApplicationRedeployedThisRelease":false,
+  "nativeSourceBindingVerified":false,
+  "references":["https://www.copyright.gov/newsnet/2025/1060.html","https://www.uspto.gov/trademarks/basics/what-trademark"]
+}
